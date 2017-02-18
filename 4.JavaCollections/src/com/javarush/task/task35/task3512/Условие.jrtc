@@ -1,0 +1,8 @@
+<div class="wdghtml" taskKey="com.javarush.task.task35.task3512">
+<h3>Генератор объектов</h3>
+<p>Разберись с текущими классами.<br />
+Метод <mark>newInstance</mark> класса <strong><span class="text-corporate">Generator</span></strong> должен создавать <span class="text-corporate">Event</span> для каждого нового вызова, однако сейчас компилятор ругается на синтаксис.<br />
+Переделай класс <strong><span class="text-corporate">Generator</span></strong> так, что бы конструкция стала рабочей.</p>
+<p><strong>Подсказка:</strong> <em>Для создания объекта потребуется использовать метод</em> <mark>Class&lt;T&gt;.newInstance(</mark>).</p>
+
+</div>
