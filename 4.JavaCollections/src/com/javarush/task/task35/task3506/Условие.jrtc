@@ -1,0 +1,7 @@
+<div class="wdghtml" taskKey="com.javarush.task.task35.task3506">
+<h3>Wildcards</h3>
+<p>Перепиши дженерики в методе <mark>add</mark> иcпользуя <mark>wildcards</mark>.<br />
+Логику не меняй.<br />
+Не оставляй закомментированный код.</p>
+
+</div>
