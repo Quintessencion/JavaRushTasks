@@ -1,0 +1,6 @@
+<div class="wdghtml" taskKey="com.javarush.task.task35.task3501">
+<h3>Вызов статического метода</h3>
+<p>Измени статический метод в классе <span class="text-corporate"><strong>GenericStatic</strong></span> так, чтобы он стал дженериком.<br />
+Пример вызова дан в методе <mark>main</mark>.</p>
+
+</div>
