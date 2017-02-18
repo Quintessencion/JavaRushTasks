@@ -12,6 +12,5 @@ public class Solution {
         System.out.println(eventGenerator.newInstance().getId());
         System.out.println(eventGenerator.newInstance().getId());
         System.out.println(1);
-        System.out.println(2);
     }
 }
