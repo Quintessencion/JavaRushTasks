@@ -1,0 +1,11 @@
+<div class="wdghtml" taskKey="com.javarush.task.task35.task3508">
+<h3>extends vs super</h3>
+<p>Логика всех методов &#8212; добавить <strong><span class="text-corporate">source</span></strong> в <span class="text-corporate"><strong>destination</strong></span>.<br />
+<strong><span class="text-neon">!!!Расставь ?, extends и super где необходимо:!!!</span></strong><br />
+1) <mark>one</mark> &#8212; должен работать с одним и тем же типом;<br />
+2) <mark>two</mark> &#8212; должен добавлять любых наследников типа <strong><span class="text-corporate">T</span></strong> в список, умеющий хранить только тип <span class="text-corporate"><strong>T</strong></span>;<br />
+3) <mark>three</mark> &#8212; должен добавлять объекты типа <strong><span class="text-corporate">T</span></strong> в любой список, параметризированный любым родительским классом;<br />
+4) <mark>four</mark> &#8212; должен добавлять любых наследников типа <span class="text-corporate"><strong>T</strong></span> в список, параметризированный любым родительским классом.<br />
+Не оставляй закомментированный код.</p>
+
+</div>
