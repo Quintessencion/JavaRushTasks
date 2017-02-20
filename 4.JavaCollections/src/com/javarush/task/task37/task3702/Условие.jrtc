@@ -1,4 +1,19 @@
-<div class="wdghtml" taskKey="com.javarush.task.task37.task3702.big03">
+<div class="wdghtml" taskKey="com.javarush.task.task37.task3702.big04">
+<h3>Фабрики (4)</h3>
+<p>1. В корне задачи создай интерфейс <span class="text-yellow"><strong>AbstractFactory</strong></span>, в который вынеси сигнатуру общего в фабриках метода.</p>
+<p>2. Реализуй интерфейс <span class="text-yellow"><strong>AbstractFactory</strong></span> в обеих фабриках.</p>
+<p>3. В корне задачи создай класс <span class="text-corporate"><strong>FactoryProducer</strong></span>, в котором создай публичный статический энум <span class="text-corporate">HumanFactoryType </span>со значениями <span class="text-neon"><strong>MALE</strong></span>, <span class="text-neon"><strong>FEMALE</strong></span>.</p>
+<p>4. В <strong><span class="text-corporate">FactoryProducer</span></strong> создай публичный статический метод <mark>getFactory</mark> с аргументом <strong><span class="text-corporate">HumanFactoryType</span></strong>.<br />
+Этот метод должен возвращать одну из фабрик: для ключа <span class="text-neon"><strong>MALE</strong></span> &#8212; <strong><span class="text-red">MaleFactory</span></strong>, для <span class="text-neon"><strong>FEMALE</strong></span> &#8212; <span class="text-red">FemaleFactory</span>.</p>
+<p>Молодец, Фабрика фабрик готова! Это паттерн <strong><span class="text-red">Abstract Factory</span></strong>.<br />
+В коде тебе не важно, какая фабрика используется.</p>
+<p><strong>Твои успехи:</strong><br />
+1. Освоен паттерн <strong><span class="text-red">Factory Method</span></strong>.<br />
+2. Освоен паттерн <span class="text-red"><strong>Abstract Factory</strong></span>.<br />
+3. <strong><span class="text-user">+2</span> паттерна</strong> для прохождения собеседования.</p>
+<p>Работа джава программистом стала еще ближе, скоро достигнешь цели!</p>
+
+<hr>
 <h3>Фабрики (3)</h3>
 <p>1. Создай пакет <span class="text-red"><strong>female</strong></span>, в котором создай <span class="text-corporate"><strong>KidGirl</strong></span>, <span class="text-corporate"><strong>TeenGirl</strong></span> и <span class="text-corporate"><strong>Woman</strong></span> аналогично классам из пакета <span class="text-red"><strong>male</strong></span>.</p>
 <p>2. Создай в пакете <span class="text-red"><strong>female</strong></span> фабрику <strong><span class="text-red">FemaleFactory</span></strong> аналогичную <span class="text-red"><strong>MaleFactory</strong></span> с тем же принципом получения объектов.</p>
