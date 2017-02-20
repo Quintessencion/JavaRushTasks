@@ -1,0 +1,34 @@
+<div class="wdghtml" taskKey="com.javarush.task.task37.task3702.big03">
+<h3>Фабрики (3)</h3>
+<p>1. Создай пакет <span class="text-red"><strong>female</strong></span>, в котором создай <span class="text-corporate"><strong>KidGirl</strong></span>, <span class="text-corporate"><strong>TeenGirl</strong></span> и <span class="text-corporate"><strong>Woman</strong></span> аналогично классам из пакета <span class="text-red"><strong>male</strong></span>.</p>
+<p>2. Создай в пакете <span class="text-red"><strong>female</strong></span> фабрику <strong><span class="text-red">FemaleFactory</span></strong> аналогичную <span class="text-red"><strong>MaleFactory</strong></span> с тем же принципом получения объектов.</p>
+<p>3. Подумай, что общего у двух фабрик? Что можно сделать, чтобы легко можно было переключаться между ними?</p>
+<p><strong>Ответ</strong> &#8212; в следующем задании.</p>
+
+<hr>
+<h3>Фабрики (2)</h3>
+<p>1. Создай публичный класс <span class="text-corporate"><strong>MaleFactory</strong></span> в пакете <strong><span class="text-red">male</span></strong> с публичным методом <mark>getPerson</mark>, который принимает один параметр <span class="text-corporate">int</span> <mark class="user">age</mark> (<em>возраст</em>) и возвращает нужный объект одного из классов, реализующих интерфейс <span class="text-yellow"><strong>Human</strong></span>.</p>
+<p>2. Логика метода <mark>getPerson</mark>: используя константу <span class="text-neon"><strong>MAX_AGE</strong></span> определи, какой класс соответствует переданному возрасту.<br />
+Например, <mark class="user">age</mark><strong>=<span class="text-user">4</span></strong> соответствует мальчику (<span class="text-corporate"><strong>KidBoy</strong></span>), <mark class="user">age</mark><strong>=<span class="text-user">15</span></strong> &#8212; подростку (<span class="text-corporate"><strong>TeenBoy</strong></span>), остальной возраст &#8212; взрослому мужчине.</p>
+<p>3. В методе <mark>main класса Solution</mark> создай фабрику и вызови у нее метод <mark>getPerson</mark> три раза с такими параметрами: <span class="text-user"><strong>99, 4, 15</strong></span>.</p>
+<p><strong>Выведи результат в консоль.</strong><br />
+<strong>Вывод должен быть следующий:</strong><br />
+<code>Man{}<br />
+KidBoy{}<br />
+TeenBoy{}</code></p>
+<p>Молодец, Фабрика готова! Это паттерн <span class="text-red"><strong>Factory Method</strong></span>.</p>
+
+<hr>
+<h3>Фабрики (1)</h3>
+<p>Привет!<br />
+Сейчас ты будешь разбираться с паттерном <strong>Factory Method</strong>. Возьмем пример с людьми.<br />
+Будем определять, к какому типу относится человек в зависимости от его возраста.</p>
+<p>В этом задании подготовим данные, которые будем использовать в фабрике.</p>
+<p>1. Для всех типов людей создай общий интерфейс <strong><span class="text-yellow">Human</span></strong>.</p>
+<p>2. Будем делать <strong><span class="text-corporate">Factory</span></strong> для мужчин. Для этого создай пакет male, в котором создай классы <span class="text-corporate"><strong>KidBoy</strong></span>, <span class="text-corporate"><strong>TeenBoy</strong></span>, <span class="text-corporate"><strong>Man</strong></span>.<br />
+Во всех этих классах реализуй интерфейс <span class="text-yellow"><strong>Human</strong></span>.</p>
+<p>3. В каждом классе <span class="text-corporate"><strong>KidBoy</strong></span>, <span class="text-corporate"><strong>TeenBoy</strong></span> создай свою публичную константу <strong><span class="text-neon">MAX_AGE</span></strong> с соответствующими значениями: <span class="text-user"><strong>12, 19</strong></span>.</p>
+<p>4. Сгенерируй автоматические методы toString для каждого класса <span class="text-corporate"><strong>KidBoy</strong></span>, <span class="text-corporate"><strong>TeenBoy</strong></span>, <span class="text-corporate"><strong>Man</strong></span>. Получится &#171;<strong><em>KidBoy{}</em></strong>&#187; и т.п.</p>
+<p>5. Создай класс <span class="text-corporate">Solution</span> с методом <mark>main</mark>.</p>
+
+</div>
