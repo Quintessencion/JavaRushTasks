@@ -1,0 +1,20 @@
+<div class="wdghtml" taskKey="com.javarush.task.task34.task3408">
+<h3>Кэширование</h3>
+<p>Класс <span class="text-corporate"><strong>Cache</strong></span> &#8212; универсальный параметризированный класс для кеширования объектов.<br />
+Он работает с классами (<em><strong>дженерик тип Т</strong></em>), у которых обязан быть:<br />
+а) публичный конструктор с одним параметром типа <span class="text-corporate"><strong>K</strong></span>;<br />
+б) метод <mark>K getKey()</mark> с любым модификатором доступа.</p>
+<p><strong>Задание:</strong><br />
+1. Выбери правильный тип для поля cache. <span class="text-red">Map&lt;K, V&gt; <strong>cache</strong></span> должен хранить ключи, на которые есть активные ссылки.<br />
+Если нет активных ссылок на ключи, то они вместе со значениями должны автоматически удаляться из cache.<br />
+2. Реализуй логику метода <mark>getByKey</mark>:<br />
+2.1. Верни объект из <strong><span class="text-red">cache</span></strong> для ключа <strong>key</strong>.<br />
+2.2. Если объекта не существует в кэше, то добавьте в кэш новый экземпляр используя рефлексию, см. пункт <strong>а)</strong>.<br />
+3. Реализуй логику метода <mark>put</mark>:<br />
+3.1. Используя рефлексию получи ссылку на метод, описанный в пункте <strong>б)</strong>.<br />
+3.2. Используя рефлексию разреши к нему доступ.<br />
+3.3. Используя рефлексию вызови метод <mark>getKey</mark> у объекта <mark class="green">obj</mark>, таким образом ты получишь ключ <strong>key</strong>.<br />
+3.4. Добавь в кэш пару <span class="text-red">&lt;key, obj&gt;</span>.<br />
+3.5. Верни <span class="text-neon"><strong>true</strong></span>, если метод отработал корректно, <span class="text-neon"><strong>false</strong></span> в противном случае. Исключения игнорируй.</p>
+
+</div>

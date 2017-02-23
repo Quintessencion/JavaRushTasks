@@ -1,0 +1,28 @@
+<div class="wdghtml" taskKey="com.javarush.task.task34.task3411">
+<h3>Ханойские башни</h3>
+<p>Имеется три стержня. На стержень <strong>A</strong> нанизаны <strong>count</strong> колец, причем кольца отличаются размером и лежат меньшее на большем. Требуется перенести пирамиду из count колец с стержня A на стержень B за наименьшее число ходов.<br />
+За один раз разрешается переносить только одно кольцо, причем нельзя класть большее кольцо на меньшее.<br />
+Нужно реализовать публичный статический метод v<mark>oid moveRing(char <strong>a</strong>, char <strong>b</strong>, char <strong>c</strong>, int <strong>count</strong>)</mark>, который выведет последовательность действий, необходимых для перемещения колец со стержня<strong> A</strong> на стержень <strong>B</strong>.</p>
+<p><strong>Параметры метода:</strong><br />
+<span class="text-corporate">char</span> <mark class="user">a</mark> &#8212; имя стержня, на котором в начале находятся все кольца;<br />
+<span class="text-corporate">char</span> <mark class="user">b</mark> &#8212; имя стержня, на который нужно перенести все кольца;<br />
+<span class="text-corporate">char</span> <mark class="user">c</mark> &#8212; имя вспомогательного стержня;<br />
+<span class="text-corporate">int</span> <mark class="user">count</mark> &#8212; общее количество колец, которые необходимо перенести.<br />
+Задачу нужно решать используя рекурсивный вызов метода <mark>moveRing</mark>.</p>
+<p><strong>Пример1:</strong><br />
+Метод <mark>moveRing</mark> вызывается с параметрами: &#8216;<strong>A</strong>&#8216;, &#8216;<strong>B</strong>&#8216;, &#8216;<strong>C</strong>&#8216;, <strong>1</strong></p>
+<p><strong>Ожидаемый вывод:</strong><br />
+<code>from A to B</code></p>
+<p><strong>Пример2:</strong><br />
+Метод <mark>moveRing</mark> вызывается с параметрами: &#8216;<strong>A</strong>&#8216;, &#8216;<strong>B</strong>&#8216;, &#8216;<strong>C</strong>&#8216;, <strong>3</strong></p>
+<p><strong>Ожидаемый вывод:</strong><br />
+<code>from A to B<br />
+from A to C<br />
+from B to C<br />
+from A to B<br />
+from C to A<br />
+from C to B<br />
+from A to B</code></p>
+<p><strong>Подсказка:</strong> <em>общее количество действий равно 2 в степени count минус 1.</em></p>
+
+</div>

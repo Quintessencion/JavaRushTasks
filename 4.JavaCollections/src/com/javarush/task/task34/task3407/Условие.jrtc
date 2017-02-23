@@ -1,0 +1,9 @@
+<div class="wdghtml" taskKey="com.javarush.task.task34.task3407">
+<h3>Призрачные ссылки</h3>
+<p>Разберись в примере.<br />
+Реализуй логику метода <mark>getFilledList</mark> класса <span class="text-corporate"><strong>Helper</strong></span>:<br />
+1) создай список, который сможет хранить призрачные ссылки на объекты <span class="text-corporate"><strong>Monkey</strong></span><br />
+2) добавь в список <span class="text-user"><strong>200</strong></span> ссылок, используйте очередь <mark>helper.getQueue(</mark>)<br />
+3) верни заполненный список</p>
+
+</div>

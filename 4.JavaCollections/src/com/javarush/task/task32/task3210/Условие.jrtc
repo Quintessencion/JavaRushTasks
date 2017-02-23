@@ -1,0 +1,12 @@
+<div class="wdghtml" taskKey="com.javarush.task.task32.task3210">
+<h3>Используем RandomAccessFile</h3>
+<p>В метод <mark>main</mark> приходят три параметра:<br />
+1) <mark class="user">fileName</mark> &#8212; путь к файлу;<br />
+2) <mark class="user">number</mark> &#8212; число, позиция в файле;<br />
+3) <mark class="user">text</mark> &#8212; текст.</p>
+<p>Считать текст с файла начиная с позиции <mark class="user">number</mark>, длинной такой же как и длинна переданного текста в третьем параметре.<br />
+Если считанный текст такой же как и <mark class="user">text</mark>, то записать в конец файла строку &#8216;<span class="text-neon"><strong>true</strong></span>&#8216;, иначе записать &#8216;<span class="text-neon"><strong>false</strong></span>&#8216;.<br />
+Используй <strong><span class="text-corporate">RandomAccessFile</span></strong> и его методы <mark>seek(long <strong>pos</strong>)</mark>, <mark>read(byte <strong>b[]</strong>, int <strong>off</strong>, int <strong>len</strong>)</mark>, <mark>write(byte <strong>b[]</strong>)</mark>.<br />
+Используй <mark>convertByteToString(byte readBytes[])</mark> для конвертации считанной строчки в текст.</p>
+
+</div>

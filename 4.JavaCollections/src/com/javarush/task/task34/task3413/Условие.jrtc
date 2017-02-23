@@ -1,0 +1,10 @@
+<div class="wdghtml" taskKey="com.javarush.task.task34.task3413">
+<h3>Кеш на основании SoftReference</h3>
+<p>Реализуй логику методов <mark>get</mark>, <mark>put</mark>, <mark>remove</mark> класса <span class="text-corporate"><strong>SoftCache</strong></span>:</p>
+<p>Метод <mark>AnyObject get(Long key</mark>) должен возвращать объект типа <span class="text-corporate"><strong>AnyObject</strong></span> из мапы <span class="text-red"><strong>cacheMap</strong></span> по ключу <mark class="user">key</mark>. Если такого ключа в <span class="text-red"><strong>cacheMap</strong></span> нет &#8212; верни <span class="text-neon"><strong>null</strong></span>.</p>
+<p>Метод <mark>AnyObject put(Long key, AnyObject value)</mark> должен добавлять в мапу пару <mark class="user">key</mark> : <strong>value</strong>. Метод должен вернуть <strong><span class="text-neon">null</span></strong>, если в <span class="text-red"><strong>cacheMap</strong></span> по такому ключу ранее не было значения. Иначе &#8212; верни предыдущее значение <strong>value</strong> по этому ключу. Не забудь вызвать метод <mark>clear()</mark> у объекта типа <span class="text-red">SoftReference&lt;AnyObject&gt;</span>.</p>
+<p>Метод <mark>AnyObject remove(Long key)</mark> должен удалить из мапы <span class="text-red"><strong>cacheMap</strong></span> пару <mark class="user">key</mark> : <strong>value</strong> по ключу <strong>key</strong>. Метод должен вернуть <span class="text-neon"><strong>null</strong></span>, если в <span class="text-red"><strong>cacheMap</strong></span> по такому ключу ранее не было значения. Иначе &#8212; верни предыдущее значение <strong>value</strong> по этому ключу. Не забудь вызвать метод <mark>clear()</mark> у объекта типа <span class="text-red">SoftReference&lt;AnyObject&gt;</span>.</p>
+<p>Не изменяй класс <span class="text-corporate"><strong>AnyObject</strong></span>.<br />
+Метод <mark>main</mark> не принимает участия в тестировании.</p>
+
+</div>

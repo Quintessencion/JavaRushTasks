@@ -1,0 +1,6 @@
+<div class="wdghtml" taskKey="com.javarush.task.task35.task3504">
+<h3>Простой generics</h3>
+<p>Параметризируй класс <span class="text-corporate"><strong>Solution</strong></span>, чтобы он мог работать со всеми классами, которые наследуются от <strong><span class="text-corporate">HashMap</span></strong>.<br />
+Метод <mark>getMap</mark> должен возвращать тип поля <strong>map</strong>.</p>
+
+</div>

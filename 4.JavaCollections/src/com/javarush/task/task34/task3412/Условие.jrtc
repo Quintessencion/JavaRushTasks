@@ -1,0 +1,14 @@
+<div class="wdghtml" taskKey="com.javarush.task.task34.task3412">
+<h3>Добавление логирования в класс</h3>
+<p>Стань курсором на красные импорты и нажми <span class="text-neon">Alt+Enter</span> в <strong>Intellij IDEA</strong>.<br />
+Выбери пункт <strong>Find JAR on web</strong>, и выбери <em><strong>slf4j-log4j13.jar</strong></em>.<br />
+Укажи куда скачать библиотеку логирования.<br />
+Посмотри где бы ты в классе Solution применил какой уровень логирования?</p>
+<p>В класс <span class="text-corporate"><strong>Solution</strong></span> нужно добавить вызовы методов уровня:<br />
+<span class="text-neon"><strong>error</strong></span> &#8212; 1 раз;<br />
+<span class="text-neon"><strong>debug</strong></span> &#8212; 5 раз;<br />
+<span class="text-neon"><strong>trace</strong></span> &#8212; 5 раз;<br />
+Сообщения в логах старайся писать информативные.<br />
+Остальной код не изменяй.</p>
+
+</div>

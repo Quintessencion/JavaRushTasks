@@ -1,0 +1,80 @@
+<div class="wdghtml" taskKey="com.javarush.task.task37.task3707.big06">
+<h3>AmigoSet (6)</h3>
+<p>Открой исходники <span class="text-corporate"><strong>HashSet</strong></span> (<em>если у тебя нет исходников джавы, то скачай их и подключи</em>), сравни со своим кодом.<br />
+Быстро это можно сделать сравнив через буфер. Скопируй код класса <span class="text-corporate"><strong>HashSet</strong></span> в буфер.<br />
+Зайди в класс <strong><span class="text-corporate">AmigoSet</span></strong>, далее правая кнопка мыши <span class="text-neon">-&gt; Compare with Clipboard</span>.</p>
+<p>Ты только что реализовал сет, аналогичный <span class="text-corporate"><strong>HashSet</strong></span>. Теперь будешь знать, как внутри устроен <span class="text-corporate"><strong>HashSet</strong></span>.<br />
+Молодец, теперь коллекции тебе не страшны!</p>
+
+<hr>
+<h3>AmigoSet (5)</h3>
+<p>Твое собственное множество <span class="text-red"><strong>AmigoSet</strong></span> реализует интерфейс <span class="text-yellow"><strong>Serializable</strong></span>. Однако, не сериализуется правильно.</p>
+<p>1. Реализуй свою логику сериализации и десериализации.<br />
+Вспоминай, какие именно приватные методы нужно добавить, чтоб сериализация пошла по твоему сценарию.<br />
+<strong>Для сериализации:</strong><br />
+* сериализуй сет<br />
+* сериализуй <strong>capacity</strong> и <strong>loadFactor</strong> у объекта <mark class="green">map</mark>, они понадобятся для десериализации.<br />
+Т.к. эти данные ограничены пакетом, то воспользуйся утилитным классом <span class="text-corporate"><strong>HashMapReflectionHelper</strong></span>, чтобы достать их.</p>
+<p><strong>Для десериализации:</strong><br />
+* вычитай все данные<br />
+* создай мапу используя конструктор с <strong>capacity</strong> и <strong>loadFactor</strong></p>
+<p>2. Помнишь, что такое <strong>transient</strong>?</p>
+
+<hr>
+<h3>AmigoSet (4)</h3>
+<p>Твое собственное множество <strong><span class="text-red">AmigoSet</span></strong> реализует интерфейс <strong><span class="text-yellow">Cloneable</span></strong>. Однако, не клонируется правильно.<br />
+Напиши свою реализацию метода <mark>Object clone()</mark>, сделай поверхностное клонирование.</p>
+<p>* Клонируй множество, клонируй <span class="text-red"><strong>map</strong></span>.<br />
+* В случае возникновения исключений выбрось <strong><span class="text-neon">InternalError</span></strong>.<br />
+* Убери лишнее пробрасывание исключения.</p>
+<p>Расширь модификатор доступа до <strong>public</strong>.</p>
+
+<hr>
+<h3>AmigoSet (3)</h3>
+<p>Напиши свою реализацию следующих методов при условии, что нужно работать с ключами мапы:<br />
+* <mark>Iterator&lt;E&gt; iterator()</mark> &#8212; очевидно, что это итератор ключей. Получи множество ключей в map, верни его итератор<br />
+* <mark>int size()</mark> &#8212; это количество ключей в map, равно количеству элементов в map<br />
+* <mark>boolean isEmpty()</mark><br />
+* <mark>boolean contains(Object o)</mark><br />
+* <mark>void clear()</mark><br />
+* <mark>boolean remove(Object o)</mark></p>
+<p>Ничего своего писать не нужно, используй то, что уже реализовано для множества ключей <strong><span class="text-red">map</span></strong>.<br />
+Используй <span class="text-neon">Alt+Insert =&gt; Override methods</span></p>
+
+<hr>
+<h3>AmigoSet (2)</h3>
+<p>Изобретать механизм работы с хешем не будем, он уже реализован во многих коллекциях.</p>
+<p>Мы возьмем коллекцию HashMap и воспользуемся ей.</p>
+<p></p>
+<p>1. Создай приватную константу Object PRESENT, которую инициализируй объектом Object, это будет наша заглушка.</p>
+<p></p>
+<p>2. Создай private transient поле HashMap&lt;E,Object&gt; map. Список ключей будет нашим сэтом, а вместо значений будем пихать в мапу заглушку PRESENT.</p>
+<p>Напомню, нам нужны только ключи, а вместо значений для всех ключей будем вставлять PRESENT. Там же должно что-то быть :)</p>
+<p>Посмотрим, что из этого получится :)</p>
+<p></p>
+<p>Коллекции обычно имеют несколько конструкторов, поэтому:</p>
+<p></p>
+<p>3. Создай конструктор без параметров, в котором инициализируй поле map.</p>
+<p></p>
+<p>4. Создай конструктор с одним параметром Collection&lt;? extends E&gt; collection.</p>
+<p>Для инициализации поля map воспользуйся конструктором, в который передается Capacity.</p>
+<p>Вычисли свою Capacity по такой формуле: максимальное из 16 и (collection.size()/.75f)</p>
+<p>Добавь все элементы из collection в нашу коллекцию.</p>
+<p>Нужный метод добавления всех элементов у нас есть благодаря тому, что AbstractSet наследуется от AbstractCollection.</p>
+<p></p>
+<p>5. Напиши свою реализацию для метода метод add(E e): добавь в map элемент 'e' в качестве ключа и PRESENT в качестве значения.</p>
+<p>Верни true, если был добавлен новый элемент, иначе верни false.</p>
+
+<hr>
+<h3>AmigoSet (1)</h3>
+<p>Давай напишем какую-нибудь коллекцию. Пусть это будет твой собственный <mark>Set</mark>.<br />
+Пусть этот класс позволяет вставку <span class="text-neon"><strong>NULL</strong></span>.</p>
+<p>1. Создай класс <strong><span class="text-corporate">AmigoSet</span></strong>. Пусть этот класс наследуется от <span class="text-corporate"><strong>AbstractSet</strong></span>.<br />
+Этот сэт должен поддерживать интерфейсы <span class="text-yellow"><strong>Serializable</strong></span> и <span class="text-yellow"><strong>Cloneable</strong></span> (<em>как же без этого??</em>).<br />
+Также очевидно, что он должен реализовывать интерфейс <span class="text-yellow"><strong>Set</strong></span>.</p>
+<p>2. Этот класс должен работать с любыми типами, поэтому сделай его дженериком: добавь тип, например, <span class="text-corporate"><strong>E</strong></span>.<br />
+Стандартные буквы, которые используют для дженериков &#8212; это <span class="text-corporate"><strong>E</strong></span> (<strong>element</strong>), <span class="text-corporate"><strong>T</strong></span> (<strong>type</strong>), <span class="text-corporate"><strong>K</strong></span> (<strong>key</strong>), <span class="text-corporate"><strong>V</strong></span> (<strong>value</strong>).<br />
+Названия не принципиальны, но облегчают чтение кода.</p>
+<p>3. Воспользуйся горячими клавишами Идеи и реализуй необходимые методы, оставь реализацию по умолчанию.</p>
+
+</div>

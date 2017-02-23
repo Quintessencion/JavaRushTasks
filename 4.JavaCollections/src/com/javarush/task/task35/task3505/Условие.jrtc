@@ -1,0 +1,11 @@
+<div class="wdghtml" taskKey="com.javarush.task.task35.task3505">
+<h3>List to Map</h3>
+<p>Реализуй логику метода convert в классе <span class="text-corporate"><strong>ConvertableUtil</strong></span>, который должен возвращать словарь, значениями которого являются элементы переданного cписка, а ключами являются объекты, полученные вызовом интерфейсного метода <mark>getKey</mark>.</p>
+<p>Элементы cписка должны наследоваться от <strong><span class="text-corporate">Convertable</span></strong>, который в свою очередь параметризирован каким-то ключом.<br />
+Например, <mark>ConvertableBook</mark> параметризирован <span class="text-corporate">String</span>, т.е. ключ в результирующем словаре должен иметь тип &#8212; <span class="text-corporate">String</span><br />
+<mark>ConvertableUser</mark> параметризирован <span class="text-corporate">Integer</span>, т.е. ключ в результирующем словаре должен иметь тип &#8212; <span class="text-corporate">Integer</span></p>
+<p>Значения в словаре должны совпадать с элементами Списка.<br />
+Смотрите метод <mark>main</mark> для примера.</p>
+<p>Расставьте в методе <mark>ConvertableUtil.convert</mark> дженерик типы.</p>
+
+</div>

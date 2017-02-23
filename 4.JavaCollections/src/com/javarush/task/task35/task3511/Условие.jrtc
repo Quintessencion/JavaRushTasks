@@ -1,0 +1,10 @@
+<div class="wdghtml" taskKey="com.javarush.task.task35.task3511">
+<h3>Wildcards для коллекций</h3>
+<p>В классе <span class="text-corporate"><strong>Solution</strong></span> реализовано <span class="text-user"><strong>4</strong></span> метода для работы со списками:<br />
+<mark>sum</mark> &#8212; суммирует все элементы списка, в котором находятся любые числа,<br />
+<mark>multiply</mark> &#8212; перемножает между собой все элементы списка, в котором находятся любые числа,<br />
+<mark>concat</mark> &#8212; соединяет все элементы списка в одну строку,<br />
+<mark>combine</mark> &#8212; принимает на вход список любых коллекций и возвращает результирующий список, в котором находятся все элементы из списков.</p>
+<p>Добавь для каждого входящего типа <strong><span class="text-corporate">List</span></strong> подходящий шаблон (<strong>wildcard</strong>), чтобы метод мог принимать только те элементы, которые может обработать.</p>
+
+</div>

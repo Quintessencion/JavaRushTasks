@@ -1,0 +1,7 @@
+<div class="wdghtml" taskKey="com.javarush.task.task35.task3502">
+<h3>Знакомство с дженериками</h3>
+<p>Параметризируй классы <span class="text-corporate"><strong>SomeClass</strong></span> и <span class="text-corporate"><strong>Solution</strong></span> следующим образом:<br />
+1. <span class="text-corporate"><strong>SomeClass</strong></span> должен работать с типами, которые наследуются от <span class="text-corporate"><strong>Number</strong></span>;<br />
+2. <span class="text-corporate">Solution</span> должен работать с типами, которые наследуются от <span class="text-corporate"><strong>List</strong></span>, который в свою очередь параметризируется типом <span class="text-corporate"><strong>SomeClass</strong></span>.</p>
+
+</div>

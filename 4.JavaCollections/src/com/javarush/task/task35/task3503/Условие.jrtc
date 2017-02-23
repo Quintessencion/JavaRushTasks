@@ -1,0 +1,8 @@
+<div class="wdghtml" taskKey="com.javarush.task.task35.task3503">
+<h3>Несколько суперклассов для дженерика</h3>
+<p>Дан класс <span class="text-corporate"><strong>Solution</strong></span>, параметризированный <span class="text-corporate"><strong>T</strong></span>.<br />
+Ограничьте параметр <span class="text-corporate"><strong>T</strong></span>.<br />
+T должен быть наследником класса <span class="text-corporate"><strong>ClassForGenerics</strong></span> и одновременно реализовывать интерфейс <strong><span class="text-yellow">InterfaceForGenerics</span></strong>.<br />
+Менять можно только класс <span class="text-corporate"><strong>Solution</strong></span>.</p>
+
+</div>
