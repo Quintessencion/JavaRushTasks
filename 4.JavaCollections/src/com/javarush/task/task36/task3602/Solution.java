@@ -57,11 +57,9 @@ public class Solution {
                     list.get(1);
                 } catch (IndexOutOfBoundsException e) {
                     return c;
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
                 } catch (NoSuchMethodException e) {
                     continue;
-                } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
+                } catch (IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
                     e.printStackTrace();
                 }
             }
