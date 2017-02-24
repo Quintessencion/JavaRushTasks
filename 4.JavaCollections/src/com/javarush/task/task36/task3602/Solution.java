@@ -50,8 +50,8 @@ public class Solution {
         for (Class c : Collections.class.getDeclaredClasses()) {
             if (List.class.isAssignableFrom(c) && Modifier.isPrivate(c.getModifiers()) && Modifier.isStatic(c.getModifiers())) {
                 try {
-                    Class clazz = Solution.class.getClassLoader().loadClass(c.getName());
-                    Constructor constructor = clazz.getDeclaredConstructor();
+//                    Class clazz = Solution.class.getClassLoader().loadClass(c.getName());
+                    Constructor constructor = c.getDeclaredConstructor();
                     constructor.setAccessible(true);
                     List list = (List) constructor.newInstance();
                     list.get(1);
@@ -59,7 +59,7 @@ public class Solution {
                     return c;
                 } catch (NoSuchMethodException e) {
                     continue;
-                } catch (IllegalAccessException | InstantiationException | InvocationTargetException | ClassNotFoundException e) {
+                } catch (IllegalAccessException | InstantiationException | InvocationTargetException e) {
                     e.printStackTrace();
                 }
             }
