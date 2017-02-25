@@ -19,12 +19,7 @@ public class Solution {
         raf.read(data, 0, text.length());
 
         raf.seek(raf.length());
-
-        if (new String(data).equals(text)) {
-            raf.write("true".getBytes());
-        } else {
-            raf.write("false".getBytes());
-        }
+        raf.write(new String(data).equals(text) ? "true".getBytes() : "false".getBytes());
 
         raf.close();
     }
