@@ -9,11 +9,20 @@ public class UsersView implements View {
 
     @Override
     public void refresh(ModelData modelData) {
-        System.out.println("All users:");
+        if (!modelData.isDisplayDeletedUserList()) {
+            System.out.println("All users:");
+        }
+        if (modelData.isDisplayDeletedUserList()) {
+            System.out.println("All deleted users:");
+        }
+
+        //Выведи в консоль всех юзеров, которые есть в modelData
+        //Перед каждым юзером сделай отступ в виде табуляции
         for (int i = 0; i < modelData.getUsers().size(); i++) {
             System.out.println("\t" + modelData.getUsers().get(i));
         }
-        System.out.println("==================================================");
+        //В конце выведи визуальный разделитель данных
+        System.out.println("===================================================");
     }
 
     @Override
@@ -23,5 +32,13 @@ public class UsersView implements View {
 
     public void fireEventShowAllUsers() {
         controller.onShowAllUsers();
+    }
+
+    public void fireEventShowDeletedUsers() {
+        controller.onShowAllDeletedUsers();
+    }
+
+    public void fireEventOpenUserEditForm(long id) {
+        controller.onOpenUserEditForm(id);
     }
 }
