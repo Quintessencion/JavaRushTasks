@@ -131,6 +131,19 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         return IPsForUser;
     }
 
+    public Set<String> getIpsForDate(String date, Date after, Date before) {
+        Set<String> ipsForDate = new HashSet<>();
+
+        for (String line : linesList) {
+            String[] parts = line.split("\\t");
+
+            if (date.equals(parts[2])) {
+                addStringEntity(after, before, ipsForDate, parts, 0);
+            }
+        }
+        return ipsForDate;
+    }
+
 
     @Override
     public Set<String> getIPsForEvent(Event event, Date after, Date before) {
@@ -197,6 +210,39 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         for (String line : linesList) {
             String[] parts = line.split("\\t");
             if (ip.equals(parts[0])) {
+                addStringEntity(after, before, users, parts, 1);
+            }
+        }
+        return users;
+    }
+
+    public Set<String> getUsersForDate(String date, Date after, Date before) {//должен возвращать пользователей с определенной датой
+        Set<String> users = new HashSet<>();
+        for (String line : linesList) {
+            String[] parts = line.split("\\t");
+            if (date.equals(parts[2])) {
+                addStringEntity(after, before, users, parts, 1);
+            }
+        }
+        return users;
+    }
+
+    public Set<String> getUsersForEvent(String event, Date after, Date before) {//должен возвращать пользователей с определенным событием
+        Set<String> users = new HashSet<>();
+        for (String line : linesList) {
+            String[] parts = line.split("\\t");
+            if (event.equals(parts[3].split(" ")[0])) {
+                addStringEntity(after, before, users, parts, 1);
+            }
+        }
+        return users;
+    }
+
+    public Set<String> getUsersForStatus(String status, Date after, Date before) {//должен возвращать пользователей с определенным статусом
+        Set<String> users = new HashSet<>();
+        for (String line : linesList) {
+            String[] parts = line.split("\\t");
+            if (status.equals(parts[4])) {
                 addStringEntity(after, before, users, parts, 1);
             }
         }
@@ -310,6 +356,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         }
         return dates;
     }
+
 
     @Override
     public Set<Date> getDatesWhenErrorHappened(Date after, Date before) {//должен возвращать даты, когда любое событие закончилось ошибкой (статус ERROR)
@@ -428,6 +475,28 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         return events;
     }
 
+    public Set<Event> getEventsForDate(String date, Date after, Date before) {// должен возвращать события, которые инициировал определенный пользователь
+        Set<Event> events = new HashSet<>();
+        for (String line : linesList) {
+            String[] parts = line.split("\\t");
+            if (date.equals(parts[2])) {
+                addEventEntity(after, before, events, parts);
+            }
+        }
+        return events;
+    }
+
+    public Set<Event> getEventsForStatus(String status, Date after, Date before) {// должен возвращать события, которые инициировал определенный пользователь
+        Set<Event> events = new HashSet<>();
+        for (String line : linesList) {
+            String[] parts = line.split("\\t");
+            if (status.equals(parts[4])) {
+                addEventEntity(after, before, events, parts);
+            }
+        }
+        return events;
+    }
+
     @Override
     public Set<Event> getFailedEvents(Date after, Date before) {//должен возвращать события, которые не выполнились
         Set<Event> events = new HashSet<>();
@@ -520,241 +589,194 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
 
     @Override
     public Set<Object> execute(String query) {
-        String field1 = "";
-        String field2 = "";
-        String value1 = "";
-        String value2 = "";
-        String value3 = "";
+        Set<Object> querySet = new HashSet<>();
 
-        List<String> values = new ArrayList<>();
-        Pattern pattern = Pattern.compile("\"[\\w \\.:]+\"");
-        Matcher matcher = pattern.matcher(query);
-        while (matcher.find()) {
-            values.add(matcher.group().replace("\"", ""));
+        switch (query) {
+            case "get ip":
+                querySet.addAll(getUniqueIPs(null, null));
+                break;
+            case "get user":
+                querySet.addAll(getAllUsers());
+                break;
+            case "get date":
+                for (String line : linesList) {
+                    querySet.add(getDate(line.split("\\t")[2]));
+                }
+                break;
+            case "get event":
+                querySet.addAll(getAllEvents(null, null));
+                break;
+            case "get status":
+                for (String line : linesList) {
+                    querySet.add(Status.valueOf(line.split("\\t")[4]));
+                }
+                break;
         }
 
         if (query.split(" ").length > 2) {
-            field1 = query.split(" ")[1];
-            field2 = query.split(" ")[3];
-            value1 = values.get(0);
-            if (values.size() > 1) {
+            List<String> values = new ArrayList<>();
+            Pattern p = Pattern.compile("\"[\\w _.:]+\"");
+            Matcher m = p.matcher(query);
+            while (m.find()) {
+                values.add(m.group().replace("\"", ""));
+            }
+
+            String field1 = query.split(" ")[1];
+            String field2 = query.split(" ")[3];
+            String value1 = values.get(0);
+            String value2;
+            String value3;
+            Date after = null;
+            Date before = null;
+            if (values.size() == 3) {
                 value2 = values.get(1);
                 value3 = values.get(2);
+                if (value2 != null) after = getDate(value2);
+                if (value3 != null) before = getDate(value3);
             }
-        }
 
-        Set<Object> querySet = new HashSet<>();
-        for (String line : linesList) {
-            String[] lineParts = line.split("\\t");
-            if (values.size() == 0) {
-                switch (query) {
-                    case "get ip":
-                        querySet.add(lineParts[0]);
-                        break;
-                    case "get user":
-                        querySet.add(lineParts[1]);
-                        break;
-                    case "get date":
-                        Date date = getDate(lineParts[2]);
-                        querySet.add(date);
-                        break;
-                    case "get event":
-                        Event event = Event.valueOf(lineParts[3].split(" ")[0]);
-                        querySet.add(event);
-                        break;
-                    case "get status":
-                        Status status = Status.valueOf(lineParts[4]);
-                        querySet.add(status);
-                        break;
-                }
-            } else {
-                switch (field1) {
-                    case "ip":
-                        switch (field2) {
-                            case "ip":
-                            case "user":
-                            case "date":
-                            case "status":
-                                if (value1.equals(lineParts[getField2Index(field2)])) {
-                                    if (values.size() == 3) {
-                                        Date date = getDate(lineParts[2]);
-                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
-                                            querySet.add(lineParts[0]);
-                                        }
-                                    } else {
-                                        querySet.add(lineParts[0]);
+            System.out.println(field1 + " - " + field2 + " - " + value1);
+
+            switch (field1) {
+                case "ip":
+                    switch (field2) {
+                        case "ip":
+                            break;
+                        case "user":
+                            querySet.addAll(getIPsForUser(value1, after, before));
+                        case "date":
+                            querySet.addAll(getIpsForDate(value1, after, before));
+                            break;
+                        case "event":
+                            querySet.addAll(getIPsForEvent(Event.valueOf(value1), after, before));
+                            break;
+                        case "status":
+                            querySet.addAll(getIPsForStatus(Status.valueOf(value1), after, before));
+                            break;
+                    }
+                    break;
+                case "user":
+                    switch (field2) {
+                        case "ip":
+                            querySet.addAll(getUsersForIP(value1, after, before));
+                            break;
+                        case "user":
+                            break;
+                        case "date":
+                            querySet.addAll(getUsersForDate(value1, after, before));
+                            break;
+                        case "event":
+                            querySet.addAll(getUsersForEvent(value1, after, before));
+                            break;
+                        case "status":
+                            querySet.addAll(getUsersForStatus(value1, after, before));
+                            break;
+                    }
+                    break;
+                case "date":
+                    switch (field2) {
+                        case "ip":
+                            for (String line : linesList) {
+                                String[] parts = line.split("\\t");
+                                if (value1.equals(parts[0])) {
+                                    if (isCompatibleDate(getDate(parts[2]).getTime(), after, before)) {
+                                        querySet.add(getDate(parts[2]));
                                     }
                                 }
-                                break;
-                            case "event":
-                                if (value1.equals(lineParts[3].split(" ")[0])) {
-                                    if (values.size() == 3) {
-                                        Date date = getDate(lineParts[2]);
-                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
-                                            querySet.add(lineParts[0]);
-                                        }
-                                    } else {
-                                        querySet.add(lineParts[0]);
+                            }
+                            break;
+                        case "user":
+                            for (String line : linesList) {
+                                String[] parts = line.split("\\t");
+                                if (value1.equals(parts[1])) {
+                                    if (isCompatibleDate(getDate(parts[2]).getTime(), after, before)) {
+                                        querySet.add(getDate(parts[2]));
                                     }
                                 }
-                                break;
-                        }
-                        break;
-                    case "user":
-                        switch (field2) {
-                            case "ip":
-                            case "user":
-                            case "date":
-                            case "status":
-                                if (value1.equals(lineParts[getField2Index(field2)])) {
-                                    if (values.size() == 3) {
-                                        Date date = getDate(lineParts[2]);
-                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
-                                            querySet.add(lineParts[1]);
-                                        }
-                                    } else {
-                                        querySet.add(lineParts[1]);
+                            }
+                            break;
+                        case "date":
+                            break;
+                        case "event":
+                            for (String line : linesList) {
+                                String[] parts = line.split("\\t");
+                                if (value1.equals(parts[3].split(" ")[0])) {
+                                    if (isCompatibleDate(getDate(parts[2]).getTime(), after, before)) {
+                                        querySet.add(getDate(parts[2]));
                                     }
                                 }
-                                break;
-                            case "event":
-                                if (value1.equals(lineParts[3].split(" ")[0])) {
-                                    if (values.size() == 3) {
-                                        Date date = getDate(lineParts[2]);
-                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
-                                            querySet.add(lineParts[1]);
-                                        }
-                                    } else {
-                                        querySet.add(lineParts[1]);
+                            }
+                            break;
+                        case "status":
+                            for (String line : linesList) {
+                                String[] parts = line.split("\\t");
+                                if (value1.equals(parts[4])) {
+                                    if (isCompatibleDate(getDate(parts[2]).getTime(), after, before)) {
+                                        querySet.add(getDate(parts[2]));
                                     }
                                 }
-                                break;
-                        }
-                        break;
-                    case "date":
-                        switch (field2) {
-                            case "ip":
-                            case "user":
-                            case "date":
-                            case "status":
-                                if (value1.equals(lineParts[getField2Index(field2)])) {
-                                    if (values.size() == 3) {
-                                        Date date = getDate(lineParts[2]);
-                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
-                                            date = getDate(lineParts[2]);
-                                            querySet.add(date);
-                                        }
-                                    } else {
-                                        Date date = getDate(lineParts[2]);
-                                        querySet.add(date);
-                                    }
+                            }
+                            break;
+                    }
+                    break;
+                case "event":
+                    switch (field2) {
+                        case "ip":
+                            querySet.addAll(getEventsForIP(value1, after, before));
+                            break;
+                        case "user":
+                            querySet.addAll(getEventsForUser(value1, after, before));
+                            break;
+                        case "date":
+                            querySet.addAll(getEventsForDate(value1, after, before));
+                            break;
+                        case "event":
+                            break;
+                        case "status":
+                            querySet.addAll(getEventsForStatus(value1, after, before));
+                            break;
+                    }
+                    break;
+                case "status":
+                    switch (field2) {
+                        case "ip":
+                            for (String line : linesList) {
+                                String[] parts = line.split("\\t");
+                                if (value1.equals(parts[0])) {
+                                    querySet.add(Status.valueOf(parts[4]));
                                 }
-                                break;
-                            case "event":
-                                if (value1.equals(lineParts[3].split(" ")[0])) {
-                                    if (values.size() == 3) {
-                                        Date date = getDate(lineParts[2]);
-                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
-                                            date = getDate(lineParts[2]);
-                                            querySet.add(date);
-                                        }
-                                    } else {
-                                        Date date = getDate(lineParts[2]);
-                                        querySet.add(date);
-                                    }
+                            }
+                            break;
+                        case "user":
+                            for (String line : linesList) {
+                                String[] parts = line.split("\\t");
+                                if (value1.equals(parts[1])) {
+                                    querySet.add(Status.valueOf(parts[4]));
                                 }
-                                break;
-                        }
-                        break;
-                    case "event":
-                        switch (field2) {
-                            case "ip":
-                            case "user":
-                            case "date":
-                            case "status":
-                                if (value1.equals(lineParts[getField2Index(field2)])) {
-                                    if (values.size() == 3) {
-                                        Date date = getDate(lineParts[2]);
-                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
-                                            Event event = Event.valueOf(lineParts[3].split(" ")[0]);
-                                            querySet.add(event);
-                                        }
-                                    } else {
-                                        Event event = Event.valueOf(lineParts[3].split(" ")[0]);
-                                        querySet.add(event);
-                                    }
+                            }
+                            break;
+                        case "date":
+                            for (String line : linesList) {
+                                String[] parts = line.split("\\t");
+                                if (value1.equals(parts[2])) {
+                                    querySet.add(Status.valueOf(parts[4]));
                                 }
-                                break;
-                            case "event":
-                                if (value1.equals(lineParts[3].split(" ")[0])) {
-                                    if (values.size() == 3) {
-                                        Date date = getDate(lineParts[2]);
-                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
-                                            Event event = Event.valueOf(lineParts[3].split(" ")[0]);
-                                            querySet.add(event);
-                                        }
-                                    } else {
-                                        Event event = Event.valueOf(lineParts[3].split(" ")[0]);
-                                        querySet.add(event);
-                                    }
+                            }
+                            break;
+                        case "event":
+                            for (String line : linesList) {
+                                String[] parts = line.split("\\t");
+                                if (value1.equals(parts[3].split(" ")[0])) {
+                                    querySet.add(Status.valueOf(parts[4]));
                                 }
-                                break;
-                        }
-                        break;
-                    case "status":
-                        switch (field2) {
-                            case "ip":
-                            case "user":
-                            case "date":
-                            case "status":
-                                if (value1.equals(lineParts[getField2Index(field2)])) {
-                                    if (values.size() == 3) {
-                                        Date date = getDate(lineParts[2]);
-                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
-                                            Status status = Status.valueOf(lineParts[4]);
-                                            querySet.add(status);
-                                        }
-                                    } else {
-                                        Status status = Status.valueOf(lineParts[4]);
-                                        querySet.add(status);
-                                    }
-                                }
-                                break;
-                            case "event":
-                                if (value1.equals(lineParts[3].split(" ")[0])) {
-                                    if (values.size() == 3) {
-                                        Date date = getDate(lineParts[2]);
-                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
-                                            Status status = Status.valueOf(lineParts[4]);
-                                            querySet.add(status);
-                                        }
-                                    } else {
-                                        Status status = Status.valueOf(lineParts[4]);
-                                        querySet.add(status);
-                                    }
-                                }
-                                break;
-                        }
-                        break;
-                }
+                            }
+                            break;
+                        case "status":
+                            break;
+                    }
+                    break;
             }
         }
         return querySet;
-    }
-
-    private int getField2Index(String field2) {
-        switch (field2) {
-            case "ip":
-                return 0;
-            case "user":
-                return 1;
-            case "date":
-                return 2;
-            case "event":
-                return 3;
-            case "status":
-                return 4;
-        }
-        return -1;
     }
 }
