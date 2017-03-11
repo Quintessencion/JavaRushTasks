@@ -37,5 +37,7 @@ public class Solution {
         System.out.println(logParser.execute("get event for date = \"12.12.2013 21:56:30\" and date between \"30.08.2012 16:08:13\" and \"29.2.2028 5:4:7\""));
         System.out.println(logParser.execute("get event for status = \"OK\" and date between \"30.08.2012 16:08:13\" and \"29.2.2028 5:4:7\""));
         System.out.println(logParser.execute("get date for ip = \"146.34.15.5\" and date between \"30.08.2012 16:08:13\" and \"29.2.2028 5:4:7\""));
+        System.out.println();
+        System.out.println(logParser.execute("get status for ip = \"146.34.15.5\" and date between \"30.08.2012 16:08:13\" and \"29.2.2028 5:4:7\""));
     }
 }

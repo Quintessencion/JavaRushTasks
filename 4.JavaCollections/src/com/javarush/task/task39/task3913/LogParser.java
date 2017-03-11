@@ -743,7 +743,9 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
                             for (String line : linesList) {
                                 String[] parts = line.split("\\t");
                                 if (value1.equals(parts[0])) {
-                                    querySet.add(Status.valueOf(parts[4]));
+                                    if (isCompatibleDate(getDate(parts[2]).getTime(), after, before)) {
+                                        querySet.add(Status.valueOf(parts[4]));
+                                    }
                                 }
                             }
                             break;
@@ -751,7 +753,9 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
                             for (String line : linesList) {
                                 String[] parts = line.split("\\t");
                                 if (value1.equals(parts[1])) {
-                                    querySet.add(Status.valueOf(parts[4]));
+                                    if (isCompatibleDate(getDate(parts[2]).getTime(), after, before)) {
+                                        querySet.add(Status.valueOf(parts[4]));
+                                    }
                                 }
                             }
                             break;
@@ -759,7 +763,9 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
                             for (String line : linesList) {
                                 String[] parts = line.split("\\t");
                                 if (value1.equals(parts[2])) {
-                                    querySet.add(Status.valueOf(parts[4]));
+                                    if (isCompatibleDate(getDate(parts[2]).getTime(), after, before)) {
+                                        querySet.add(Status.valueOf(parts[4]));
+                                    }
                                 }
                             }
                             break;
@@ -767,7 +773,9 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
                             for (String line : linesList) {
                                 String[] parts = line.split("\\t");
                                 if (value1.equals(parts[3].split(" ")[0])) {
-                                    querySet.add(Status.valueOf(parts[4]));
+                                    if (isCompatibleDate(getDate(parts[2]).getTime(), after, before)) {
+                                        querySet.add(Status.valueOf(parts[4]));
+                                    }
                                 }
                             }
                             break;
