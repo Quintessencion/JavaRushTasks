@@ -2,9 +2,7 @@ package com.javarush.task.task39.task3913;
 
 import com.javarush.task.task39.task3913.query.*;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -17,15 +15,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQuery {
-
+    //Fields
     private Path logDir;
     private List<String> linesList;
 
+    //Constructor
     public LogParser(Path logDir) {
         this.logDir = logDir;
         linesList = getLinesList();
     }
 
+    //Functions
     private List<String> getLinesList() {
         String[] files = logDir.toFile().list(new FilenameFilter() {
             @Override
@@ -50,24 +50,6 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
 
         if (isCompatibleDate(lineDateTime, after, before)) {
             enteties.add(parts[part]);
-        }
-    }
-
-    private void addDateEntity(Date after, Date before, Set<Date> enteties, String[] parts) {
-        Date lineDate = getDate(parts[2]);
-        long lineDateTime = getDate(parts[2]).getTime();
-
-        if (isCompatibleDate(lineDateTime, after, before)) {
-            enteties.add(lineDate);
-        }
-    }
-
-    private void addEventEntity(Date after, Date before, Set<Event> enteties, String[] parts) {
-        Event lineEvent = Event.valueOf(parts[3].split(" ")[0]);
-        long lineDateTime = getDate(parts[2]).getTime();
-
-        if (isCompatibleDate(lineDateTime, after, before)) {
-            enteties.add(lineEvent);
         }
     }
 
@@ -101,6 +83,23 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         return date;
     }
 
+    private void addDateEntity(Date after, Date before, Set<Date> dates, String[] parts) {
+        Date date = getDate(parts[2]);
+        long dateTime = getDate(parts[2]).getTime();
+        if (isCompatibleDate(dateTime, after, before)) {
+            dates.add(date);
+        }
+    }
+
+    private void addEventEntity(Date after, Date before, Set<Event> enteties, String[] parts) {
+        Event event = Event.valueOf(parts[3].split(" ")[0]);
+        long lineDateTime = getDate(parts[2]).getTime();
+
+        if (isCompatibleDate(lineDateTime, after, before)) {
+            enteties.add(event);
+        }
+    }
+
     @Override
     public int getNumberOfUniqueIPs(Date after, Date before) {
         return getUniqueIPs(after, before).size();
@@ -132,6 +131,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         return IPsForUser;
     }
 
+
     @Override
     public Set<String> getIPsForEvent(Event event, Date after, Date before) {
         Set<String> IPsForEvent = new HashSet<>();
@@ -161,17 +161,16 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
     }
 
     @Override
-    public Set<String> getAllUsers() {
+    public Set<String> getAllUsers() {//должен возвращать всех пользователей
         Set<String> allUsers = new HashSet<>();
-
         for (String line : linesList) {
-            allUsers.add(line.split("\\t")[1]);
+            allUsers.add(line.split("\t")[1]);
         }
         return allUsers;
     }
 
     @Override
-    public int getNumberOfUsers(Date after, Date before) {
+    public int getNumberOfUsers(Date after, Date before) {//должен возвращать количество уникальных пользователей
         Set<String> users = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
@@ -181,368 +180,342 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
     }
 
     @Override
-    public int getNumberOfUserEvents(String user, Date after, Date before) {
-        Set<String> userEvents = new HashSet<>();
-
+    public int getNumberOfUserEvents(String user, Date after, Date before) {//должен возвращать количество событий от определенного пользователя
+        Set<String> events = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-
             if (user.equals(parts[1])) {
-                addStringEntity(after, before, userEvents, parts, 2);
+                addStringEntity(after, before, events, parts, 3);
             }
         }
-        return userEvents.size();
+        return events.size();
     }
 
     @Override
-    public Set<String> getUsersForIP(String ip, Date after, Date before) {
-        Set<String> usersForIP = new HashSet<>();
-
+    public Set<String> getUsersForIP(String ip, Date after, Date before) {//должен возвращать пользователей с определенным IP
+        Set<String> users = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-
             if (ip.equals(parts[0])) {
-                addStringEntity(after, before, usersForIP, parts, 1);
+                addStringEntity(after, before, users, parts, 1);
             }
         }
-        return usersForIP;
+        return users;
     }
 
     @Override
-    public Set<String> getLoggedUsers(Date after, Date before) {
-        Set<String> loggedUsers = new HashSet<>();
-
+    public Set<String> getLoggedUsers(Date after, Date before) {//должен возвращать пользователей, которые были залогинены
+        Set<String> users = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-
             if (Event.LOGIN.toString().equals(parts[3])) {
-                addStringEntity(after, before, loggedUsers, parts, 1);
+                addStringEntity(after, before, users, parts, 1);
             }
         }
-        return loggedUsers;
+        return users;
     }
 
     @Override
-    public Set<String> getDownloadedPluginUsers(Date after, Date before) {
-        Set<String> downloadedPluginUsers = new HashSet<>();
-
+    public Set<String> getDownloadedPluginUsers(Date after, Date before) {//должен возвращать пользователей, которые скачали плагин
+        Set<String> users = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-
             if (Event.DOWNLOAD_PLUGIN.toString().equals(parts[3])) {
-                addStringEntity(after, before, downloadedPluginUsers, parts, 1);
+                addStringEntity(after, before, users, parts, 1);
             }
         }
-        return downloadedPluginUsers;
+        return users;
     }
 
     @Override
-    public Set<String> getWroteMessageUsers(Date after, Date before) {
-        Set<String> wroteMessageUsers = new HashSet<>();
-
+    public Set<String> getWroteMessageUsers(Date after, Date before) {//должен возвращать пользователей, которые отправили сообщение
+        Set<String> users = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-
             if (Event.WRITE_MESSAGE.toString().equals(parts[3])) {
-                addStringEntity(after, before, wroteMessageUsers, parts, 1);
+                addStringEntity(after, before, users, parts, 1);
             }
         }
-        return wroteMessageUsers;
+        return users;
     }
 
     @Override
-    public Set<String> getSolvedTaskUsers(Date after, Date before) {
-        Set<String> solvedTaskUsers = new HashSet<>();
-
+    public Set<String> getSolvedTaskUsers(Date after, Date before) {//должен возвращать пользователей, которые решали любую задачу
+        Set<String> users = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-
             if (Event.SOLVE_TASK.toString().equals(parts[3].split(" ")[0])) {
-                addStringEntity(after, before, solvedTaskUsers, parts, 1);
+                addStringEntity(after, before, users, parts, 1);
             }
         }
-        return solvedTaskUsers;
+        return users;
     }
 
     @Override
-    public Set<String> getSolvedTaskUsers(Date after, Date before, int task) {
-        Set<String> solvedTaskUsers = new HashSet<>();
-
+    public Set<String> getSolvedTaskUsers(Date after, Date before, int task) {//должен возвращать пользователей, которые решали задачу с номером task
+        Set<String> users = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-            if (Event.SOLVE_TASK.toString().equals(parts[3].split(" ")[0])
-                    && task == Integer.valueOf(parts[3].split(" ")[1])) {
-                addStringEntity(after, before, solvedTaskUsers, parts, 1);
+            if (Event.SOLVE_TASK.toString().equals(parts[3].split(" ")[0]) && task == Integer.parseInt(parts[3].split(" ")[1])) {
+                addStringEntity(after, before, users, parts, 1);
             }
         }
-        return solvedTaskUsers;
+        return users;
     }
 
     @Override
-    public Set<String> getDoneTaskUsers(Date after, Date before) {
-        Set<String> doneTaskUsers = new HashSet<>();
-
+    public Set<String> getDoneTaskUsers(Date after, Date before) {//должен возвращать пользователей, которые решали любую задачу
+        Set<String> users = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-
             if (Event.DONE_TASK.toString().equals(parts[3].split(" ")[0])) {
-                addStringEntity(after, before, doneTaskUsers, parts, 1);
+                addStringEntity(after, before, users, parts, 1);
             }
         }
-        return doneTaskUsers;
+        return users;
     }
 
     @Override
-    public Set<String> getDoneTaskUsers(Date after, Date before, int task) {
-        Set<String> doneTaskUsers = new HashSet<>();
-
+    public Set<String> getDoneTaskUsers(Date after, Date before, int task) {//должен возвращать пользователей, которые решали задачу с номером task
+        Set<String> users = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-            if (Event.DONE_TASK.toString().equals(parts[3].split(" ")[0])
-                    && task == Integer.valueOf(parts[3].split(" ")[1])) {
-                addStringEntity(after, before, doneTaskUsers, parts, 1);
+            if (Event.DONE_TASK.toString().equals(parts[3].split(" ")[0]) && task == Integer.parseInt(parts[3].split(" ")[1])) {
+                addStringEntity(after, before, users, parts, 1);
             }
         }
-        return doneTaskUsers;
+        return users;
     }
 
     @Override
-    public Set<Date> getDatesForUserAndEvent(String user, Event event, Date after, Date before) {
-        Set<Date> datesForUserAndEvent = new HashSet<>();
-
+    public Set<Date> getDatesForUserAndEvent(String user, Event event, Date after, Date before) {//должен возвращать даты, когда определенный пользователь произвел определенное событие
+        Set<Date> dates = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
             if (user.equals(parts[1]) && event.toString().equals(parts[3].split(" ")[0])) {
-                addDateEntity(after, before, datesForUserAndEvent, parts);
+                addDateEntity(after, before, dates, parts);
             }
         }
-        return datesForUserAndEvent;
+        return dates;
     }
 
     @Override
-    public Set<Date> getDatesWhenSomethingFailed(Date after, Date before) {
-        Set<Date> datesWhenSomethingFailed = new HashSet<>();
-
+    public Set<Date> getDatesWhenSomethingFailed(Date after, Date before) {//должен возвращать даты, когда любое событие не выполнилось (статус FAILED)
+        Set<Date> dates = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
             if (Status.FAILED.toString().equals(parts[4])) {
-                addDateEntity(after, before, datesWhenSomethingFailed, parts);
+                addDateEntity(after, before, dates, parts);
             }
         }
-        return datesWhenSomethingFailed;
+        return dates;
     }
 
     @Override
-    public Set<Date> getDatesWhenErrorHappened(Date after, Date before) {
-        Set<Date> datesWhenErrorHappened = new HashSet<>();
-
+    public Set<Date> getDatesWhenErrorHappened(Date after, Date before) {//должен возвращать даты, когда любое событие закончилось ошибкой (статус ERROR)
+        Set<Date> dates = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
             if (Status.ERROR.toString().equals(parts[4])) {
-                addDateEntity(after, before, datesWhenErrorHappened, parts);
+                addDateEntity(after, before, dates, parts);
             }
         }
-        return datesWhenErrorHappened;
+        return dates;
     }
 
     @Override
-    public Date getDateWhenUserLoggedFirstTime(String user, Date after, Date before) {
-        Date dateWhenUserLoggedFirstTime = new Date(Long.MAX_VALUE);
-        boolean isDateChanged = false;
+    public Date getDateWhenUserLoggedFirstTime(String user, Date after, Date before) {//должен возвращать дату, когда пользователь залогинился впервые за указанный период. Если такой даты в логах нет — null
+        TreeSet<Date> date = new TreeSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-            if (user.equals(parts[1]) && Event.LOGIN.toString().equals(parts[3])) {
-                if (getDate(parts[2]).getTime() < dateWhenUserLoggedFirstTime.getTime()) {
-                    dateWhenUserLoggedFirstTime = getDate(parts[2]);
-                    isDateChanged = true;
+            if (user.equals(parts[1]) && Event.LOGIN.toString().equals(parts[3]) && Status.OK.toString().equals(parts[4])) {
+                if (isCompatibleDate(getDate(parts[2]).getTime(), after, before)) {
+                    date.add(getDate(parts[2]));
                 }
             }
         }
-        return isDateChanged ? dateWhenUserLoggedFirstTime : null;
+        return !date.isEmpty() ? date.first() : null;
     }
 
     @Override
-    public Date getDateWhenUserSolvedTask(String user, int task, Date after, Date before) {
-        Date dateWhenUserSolvedTask = new Date(Long.MAX_VALUE);
-        boolean isDateChanged = false;
+    public Date getDateWhenUserSolvedTask(String user, int task, Date after, Date before) {//должен возвращать дату, когда пользователь впервые попытался решить определенную задачу. Если такой даты в логах нет — null
+        TreeSet<Date> date = new TreeSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-            if (user.equals(parts[1])
-                    && Event.SOLVE_TASK.toString().equals(parts[3].split(" ")[0])
-                    && task == Integer.valueOf(parts[3].split(" ")[1])) {
-                if (getDate(parts[2]).getTime() < dateWhenUserSolvedTask.getTime()) {
-                    dateWhenUserSolvedTask = getDate(parts[2]);
-                    isDateChanged = true;
+            if (user.equals(parts[1]) && Event.SOLVE_TASK.toString().equals(parts[3].split(" ")[0]) && task == Integer.parseInt(parts[3].split(" ")[1])) {
+                if (isCompatibleDate(getDate(parts[2]).getTime(), after, before)) {
+                    date.add(getDate(parts[2]));
                 }
             }
         }
-        return isDateChanged ? dateWhenUserSolvedTask : null;
+        return !date.isEmpty() ? date.first() : null;
     }
 
     @Override
-    public Date getDateWhenUserDoneTask(String user, int task, Date after, Date before) {
+    public Date getDateWhenUserDoneTask(String user, int task, Date after, Date before) {//должен возвращать дату, когда пользователь впервые решил определенную задачу. Если такой даты в логах нет — null
+        TreeSet<Date> date = new TreeSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-            if (user.equals(parts[1])
-                    && Event.DONE_TASK.toString().equals(parts[3].split(" ")[0])
-                    && task == Integer.valueOf(parts[3].split(" ")[1])) {
-                return getDate(parts[2]);
+            if (user.equals(parts[1]) && Event.DONE_TASK.toString().equals(parts[3].split(" ")[0]) && task == Integer.parseInt(parts[3].split(" ")[1])) {
+                if (isCompatibleDate(getDate(parts[2]).getTime(), after, before)) {
+                    date.add(getDate(parts[2]));
+                }
             }
         }
-        return null;
+        return !date.isEmpty() ? date.first() : null;
     }
 
     @Override
-    public Set<Date> getDatesWhenUserWroteMessage(String user, Date after, Date before) {
-        Set<Date> datesWhenUserWroteMessage = new HashSet<>();
-
+    public Set<Date> getDatesWhenUserWroteMessage(String user, Date after, Date before) {//должен возвращать даты, когда пользователь написал сообщение
+        Set<Date> dates = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
             if (user.equals(parts[1]) && Event.WRITE_MESSAGE.toString().equals(parts[3])) {
-                addDateEntity(after, before, datesWhenUserWroteMessage, parts);
+                addDateEntity(after, before, dates, parts);
             }
         }
-        return datesWhenUserWroteMessage;
+        return dates;
     }
 
     @Override
-    public Set<Date> getDatesWhenUserDownloadedPlugin(String user, Date after, Date before) {
-        Set<Date> datesWhenUserDownloadedPlugin = new HashSet<>();
-
+    public Set<Date> getDatesWhenUserDownloadedPlugin(String user, Date after, Date before) {//должен возвращать даты, когда пользователь скачал плагин
+        Set<Date> dates = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
             if (user.equals(parts[1]) && Event.DOWNLOAD_PLUGIN.toString().equals(parts[3])) {
-                addDateEntity(after, before, datesWhenUserDownloadedPlugin, parts);
+                addDateEntity(after, before, dates, parts);
             }
         }
-        return datesWhenUserDownloadedPlugin;
+        return dates;
     }
 
     @Override
-    public int getNumberOfAllEvents(Date after, Date before) {
+    public int getNumberOfAllEvents(Date after, Date before) {//должен возвращать количество событий за указанный период
         return getAllEvents(after, before).size();
     }
 
     @Override
-    public Set<Event> getAllEvents(Date after, Date before) {
-        Set<Event> eventTypes = new HashSet<>();
-
+    public Set<Event> getAllEvents(Date after, Date before) {//должен возвращать все события за указанный период
+        Set<Event> events = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-            addEventEntity(after, before, eventTypes, parts);
+            addEventEntity(after, before, events, parts);
         }
-        return eventTypes;
+        return events;
     }
 
     @Override
-    public Set<Event> getEventsForIP(String ip, Date after, Date before) {
-        Set<Event> EventsForIP = new HashSet<>();
-
+    public Set<Event> getEventsForIP(String ip, Date after, Date before) {// должен возвращать события, которые происходили с указанного IP
+        Set<Event> events = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
             if (ip.equals(parts[0])) {
-                addEventEntity(after, before, EventsForIP, parts);
+                addEventEntity(after, before, events, parts);
             }
         }
-        return EventsForIP;
+        return events;
     }
 
     @Override
-    public Set<Event> getEventsForUser(String user, Date after, Date before) {
-        Set<Event> EventsForUser = new HashSet<>();
-
+    public Set<Event> getEventsForUser(String user, Date after, Date before) {// должен возвращать события, которые инициировал определенный пользователь
+        Set<Event> events = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
             if (user.equals(parts[1])) {
-                addEventEntity(after, before, EventsForUser, parts);
+                addEventEntity(after, before, events, parts);
             }
         }
-        return EventsForUser;
+        return events;
     }
 
     @Override
-    public Set<Event> getFailedEvents(Date after, Date before) {
-        Set<Event> FailedEvents = new HashSet<>();
-
+    public Set<Event> getFailedEvents(Date after, Date before) {//должен возвращать события, которые не выполнились
+        Set<Event> events = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-            if (Status.FAILED.toString().equals(parts[4])) {
-                addEventEntity(after, before, FailedEvents, parts);
+            if (parts[4].equals(Status.FAILED.toString())) {
+                addEventEntity(after, before, events, parts);
             }
         }
-        return FailedEvents;
+        return events;
     }
 
     @Override
-    public Set<Event> getErrorEvents(Date after, Date before) {
-        Set<Event> ErrorEvents = new HashSet<>();
-
+    public Set<Event> getErrorEvents(Date after, Date before) {//должен возвращать события, которые завершились ошибкой
+        Set<Event> events = new HashSet<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-            if (Status.ERROR.toString().equals(parts[4])) {
-                addEventEntity(after, before, ErrorEvents, parts);
+            if (parts[4].equals(Status.ERROR.toString())) {
+                addEventEntity(after, before, events, parts);
             }
         }
-        return ErrorEvents;
+        return events;
     }
 
     @Override
-    public int getNumberOfAttemptToSolveTask(int task, Date after, Date before) {
-        int numberOfAttemptToSolveTask = 0;
-
+    public int getNumberOfAttemptToSolveTask(int task, Date after, Date before) {// должен возвращать количество попыток решить определенную задачу
+        int countAttempt = 0;
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-            if (Event.SOLVE_TASK.toString().equals(parts[3].split(" ")[0])
-                    && task == Integer.valueOf(parts[3].split(" ")[1])) {
-                numberOfAttemptToSolveTask++;
+            if (Event.SOLVE_TASK.toString().equals(parts[3].split(" ")[0]) && Integer.parseInt(parts[3].split(" ")[1]) == task) {
+                if (isCompatibleDate(getDate(parts[2]).getTime(), after, before)) {
+                    countAttempt++;
+                }
             }
         }
-        return numberOfAttemptToSolveTask;
+        return countAttempt;
     }
 
     @Override
-    public int getNumberOfSuccessfulAttemptToSolveTask(int task, Date after, Date before) {
+    public int getNumberOfSuccessfulAttemptToSolveTask(int task, Date after, Date before) {//должен возвращать количество успешных решений определенной задачи
         int numberOfSuccessfulAttemptToSolveTask = 0;
 
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-            if (Event.SOLVE_TASK.toString().equals(parts[3].split(" ")[0])
-                    && task == Integer.valueOf(parts[3].split(" ")[1])
-                    && Status.OK.toString().equals(parts[4])) {
-                numberOfSuccessfulAttemptToSolveTask++;
+            if (Event.DONE_TASK.toString().equals(parts[3].split(" ")[0])
+                    && task == Integer.parseInt(parts[3].split(" ")[1])) {
+                if (isCompatibleDate(getDate(parts[2]).getTime(), after, before)) {
+                    numberOfSuccessfulAttemptToSolveTask++;
+                }
             }
         }
         return numberOfSuccessfulAttemptToSolveTask;
     }
 
     @Override
-    public Map<Integer, Integer> getAllSolvedTasksAndTheirNumber(Date after, Date before) {
-        return getTasksMap(Event.SOLVE_TASK);
-    }
-
-    @Override
-    public Map<Integer, Integer> getAllDoneTasksAndTheirNumber(Date after, Date before) {
-        return getTasksMap(Event.DONE_TASK);
-    }
-
-    private Map<Integer, Integer> getTasksMap(Event event) {
-        Map<Integer, Integer> allTasksAndTheirNumber = new HashMap<>();
-        int numberOfSolvedTask;
-        int value;
-
+    public Map<Integer, Integer> getAllSolvedTasksAndTheirNumber(Date after, Date before) {//должен возвращать мапу (номер_задачи : количество_попыток_решить_ее)
+        Map<Integer, Integer> solvedTasks = new HashMap<>();
         for (String line : linesList) {
             String[] parts = line.split("\\t");
-            if (event.toString().equals(parts[3].split(" ")[0])) {
-                numberOfSolvedTask = Integer.valueOf(parts[3].split(" ")[1]);
-                if (allTasksAndTheirNumber.containsKey(numberOfSolvedTask)) {
-                    value = allTasksAndTheirNumber.get(numberOfSolvedTask) + 1;
-                    allTasksAndTheirNumber.put(numberOfSolvedTask, value);
-                } else {
-                    allTasksAndTheirNumber.put(numberOfSolvedTask, 1);
+            if (Event.SOLVE_TASK.toString().equals(parts[3].split(" ")[0])) {
+                if (isCompatibleDate(getDate(parts[2]).getTime(), after, before)) {
+                    if (solvedTasks.containsKey(Integer.parseInt(parts[3].split(" ")[1]))) {
+                        continue;
+                    } else {
+                        solvedTasks.put(Integer.parseInt(parts[3].split(" ")[1]), getNumberOfAttemptToSolveTask(Integer.parseInt(parts[3].split(" ")[1]), after, before));
+                    }
                 }
             }
         }
-        return allTasksAndTheirNumber;
+        return solvedTasks;
+    }
+
+    @Override
+    public Map<Integer, Integer> getAllDoneTasksAndTheirNumber(Date after, Date before) {//должен возвращать мапу (номер_задачи : сколько_раз_ее_решили)
+        Map<Integer, Integer> solvedTasks = new HashMap<>();
+        for (String line : linesList) {
+            String[] parts = line.split("\\t");
+            if (Event.DONE_TASK.toString().equals(parts[3].split(" ")[0])) {
+                if (isCompatibleDate(getDate(parts[2]).getTime(), after, before)) {
+                    if (solvedTasks.containsKey(Integer.parseInt(parts[3].split(" ")[1]))) {
+                        continue;
+                    } else {
+                        solvedTasks.put(Integer.parseInt(parts[3].split(" ")[1]), getNumberOfSuccessfulAttemptToSolveTask(Integer.parseInt(parts[3].split(" ")[1]), after, before));
+                    }
+                }
+            }
+        }
+        return solvedTasks;
     }
 
     @Override
