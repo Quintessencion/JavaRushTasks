@@ -14,7 +14,7 @@ public @interface Ticket {
 
     Priority priority() default Priority.MEDIUM;
 
-    public enum Priority {
+    enum Priority {
         LOW,
         MEDIUM,
         HIGH
