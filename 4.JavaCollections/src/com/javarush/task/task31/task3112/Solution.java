@@ -1,5 +1,7 @@
 package com.javarush.task.task31.task3112;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
@@ -34,15 +36,35 @@ public class Solution {
 
     public static Path downloadFile(String urlString, Path downloadDirectory) throws IOException {
         // implement this method
-        URL url = new URL(urlString);
-        InputStream inputStream = url.openStream();
+        BufferedImage img = ImageIO.read(new URL(urlString));
+        String nameImage = new File(urlString).getName();
 
-        Path tmp = Files.createTempFile("temp-", ".tmp");
-        Files.copy(inputStream, tmp);
-        String fileName = urlString.substring(urlString.lastIndexOf("/"));
-        String dir = downloadDirectory.toString();
-        Path moveTo = Paths.get(dir + fileName);
-        Files.move(tmp, moveTo);
-        return Paths.get(downloadDirectory.toString() + fileName);
+        File downLoadFile = new File("D:/tempDir/" + nameImage);
+        File tempDir = new File("D:/tempDir");
+        File dest = new File(downloadDirectory + File.separator + nameImage);
+        if (!tempDir.exists()) {
+            tempDir.mkdir();
+        }
+        ImageIO.write(img, "png", downLoadFile);
+
+        if (!Files.exists(downloadDirectory)) {
+            Files.createDirectory(downloadDirectory);
+        }
+
+        downLoadFile.renameTo(dest);
+        tempDir.delete();
+
+        return dest.toPath();
+
+//        URL url = new URL(urlString);
+//        InputStream inputStream = url.openStream();
+//
+//        Path tmp = Files.createTempFile("temp-", ".tmp");
+//        Files.copy(inputStream, tmp);
+//        String fileName = urlString.substring(urlString.lastIndexOf("/"));
+//        String dir = downloadDirectory.toString();
+//        Path moveTo = Paths.get(dir + fileName);
+//        Files.move(tmp, moveTo);
+//        return Paths.get(downloadDirectory.toString() + fileName);
     }
 }
