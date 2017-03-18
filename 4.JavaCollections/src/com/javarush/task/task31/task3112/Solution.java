@@ -1,7 +1,5 @@
 package com.javarush.task.task31.task3112;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
