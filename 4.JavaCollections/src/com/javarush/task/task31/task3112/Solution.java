@@ -56,14 +56,14 @@ public class Solution {
 
         return dest.toPath();
 
+//        String fileName = urlString.substring(urlString.lastIndexOf("/"));
 //        URL url = new URL(urlString);
 //        InputStream inputStream = url.openStream();
 //
 //        Path tmp = Files.createTempFile("temp-", ".tmp");
 //        Files.copy(inputStream, tmp);
-//        String fileName = urlString.substring(urlString.lastIndexOf("/"));
-//        String dir = downloadDirectory.toString();
-//        Path moveTo = Paths.get(dir + fileName);
+//
+//        Path moveTo = Paths.get(downloadDirectory.toString() + fileName);
 //        Files.move(tmp, moveTo);
 //        return Paths.get(downloadDirectory.toString() + fileName);
     }
