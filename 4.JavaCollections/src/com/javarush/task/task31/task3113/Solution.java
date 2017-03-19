@@ -24,7 +24,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 */
 public class Solution {
 
-    //Fileds
+    //Fields
     static int countDir = -1;
     static int countFiles = 0;
     static long countBytes = 0;
