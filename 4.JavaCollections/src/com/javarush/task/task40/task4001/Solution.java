@@ -19,7 +19,7 @@ POST, а не GET
 public class Solution {
     public static void main(String[] args) throws Exception {
         Solution solution = new Solution();
-        solution.sendPost(new URL("http://requestb.in/tajca9ta"), "name=zapp&mood=good&locale=&id=777");
+        solution.sendPost(new URL("https://www.codewars.com/"), "kata/square-every-digit/train/java");
     }
 
     public void sendPost(URL url, String urlParameters) throws Exception {
