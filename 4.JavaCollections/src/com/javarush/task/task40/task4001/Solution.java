@@ -29,7 +29,6 @@ public class Solution {
         connection.setDoOutput(true);
         connection.setRequestProperty("User-Agent", "Mozilla/5.0");
 
-        connection.setDoOutput(true);
         try (DataOutputStream dos = new DataOutputStream(connection.getOutputStream())) {
             dos.write(urlParameters.getBytes(StandardCharsets.UTF_8));
         }
