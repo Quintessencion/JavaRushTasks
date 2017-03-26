@@ -29,8 +29,8 @@ public class Solution {
         boolean hour = false;
 
         DateTimeFormatter dtf = null;
-        LocalDate localDate = null;
-        LocalTime localTime = null;
+        LocalDate localDate;
+        LocalTime localTime;
 
         if (date.contains(".") && date.contains(":")) {
             dtf = DateTimeFormatter.ofPattern("d.M.yyyy H:m:s");
