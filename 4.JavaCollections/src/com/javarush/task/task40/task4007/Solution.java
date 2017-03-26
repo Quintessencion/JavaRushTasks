@@ -24,28 +24,28 @@ public class Solution {
         boolean day = false;
         boolean hour = false;
 
+        SimpleDateFormat sdf = null;
         Calendar calendar = Calendar.getInstance();
-        Pattern p = Pattern.compile("(\\d{1,2}).(\\d{1,2}).(\\d{4})\\s(\\d{1,2}):(\\d{1,2}):(\\d{1,2})");
-        Matcher m = p.matcher(date);
-        Pattern p2 = Pattern.compile("(\\d{1,2}).(\\d{1,2}).(\\d{4})");
-        Matcher m2 = p2.matcher(date);
-        Pattern p3 = Pattern.compile("(\\d{1,2}):(\\d{1,2}):(\\d{1,2})");
-        Matcher m3 = p3.matcher(date);
 
-        if (m.find()) {
-            SimpleDateFormat sdf = new SimpleDateFormat("d.M.yyyy H:m:s");
-            calendar.setTime(sdf.parse(date));
+//        Pattern p = Pattern.compile("(\\d{1,2}).(\\d{1,2}).(\\d{4})\\s(\\d{1,2}):(\\d{1,2}):(\\d{1,2})");
+//        Matcher m = p.matcher(date);
+//        Pattern p2 = Pattern.compile("(\\d{1,2}).(\\d{1,2}).(\\d{4})");
+//        Matcher m2 = p2.matcher(date);
+//        Pattern p3 = Pattern.compile("(\\d{1,2}):(\\d{1,2}):(\\d{1,2})");
+//        Matcher m3 = p3.matcher(date);
+
+        if (date.contains(".") && date.contains(":")) {
+            sdf = new SimpleDateFormat("d.M.yyyy H:m:s");
             day = true;
             hour = true;
-        } else if (m2.find()) {
-            SimpleDateFormat sdf = new SimpleDateFormat("d.M.yyyy");
-            calendar.setTime(sdf.parse(date));
+        } else if (date.contains(".")) {
+            sdf = new SimpleDateFormat("d.M.yyyy");
             day = true;
-        } else if (m3.find()) {
-            SimpleDateFormat sdf = new SimpleDateFormat("H:m:s");
-            calendar.setTime(sdf.parse(date));
+        } else if (date.contains(":")) {
+            sdf = new SimpleDateFormat("H:m:s");
             hour = true;
         }
+        calendar.setTime(sdf.parse(date));
 
         if (day) {
             System.out.println("День: " + calendar.get(Calendar.DAY_OF_MONTH));
