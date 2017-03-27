@@ -37,8 +37,7 @@ public class Solution {
     }
 
     public static LocalTime addTime(LocalTime time, int n, ChronoUnit chronoUnit) {
-        LocalTime newTime = time.plus(n, chronoUnit);
-        return newTime;
+        return time.plus(n, chronoUnit);
     }
 
     public static Period getPeriodBetween(LocalDate firstDate, LocalDate secondDate) {
