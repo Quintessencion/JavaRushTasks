@@ -14,13 +14,15 @@ public class Field extends JPanel {
     //Fields
     private View view;
     private EventListener eventListener;
+    private Model model;
 
     //Constructor
-    public Field(View view) {
+    public Field(View view, Model model) {
         KeyHandler keyHandler = new KeyHandler();
         addKeyListener(keyHandler);
         setFocusable(true);
         this.view = view;
+        this.model = model;
     }
 
 
@@ -32,6 +34,9 @@ public class Field extends JPanel {
         for (GameObject gameObject : view.getGameObjects().getAll()) {
             gameObject.draw(g);
         }
+
+        g.setColor(Color.WHITE);
+        g.drawString("Уровень - " + model.getCurrentLevel(), 300, 450);
     }
 
     public void setEventListener(EventListener eventListener) {
@@ -58,6 +63,9 @@ public class Field extends JPanel {
                     break;
                 case KeyEvent.VK_R:
                     eventListener.restart();
+                    break;
+                case KeyEvent.VK_N:
+                    eventListener.startNextLevel();
                     break;
             }
         }
